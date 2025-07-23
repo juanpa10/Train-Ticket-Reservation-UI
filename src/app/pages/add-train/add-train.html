@@ -1,0 +1,84 @@
+<mat-toolbar color="primary" class="toolbar">
+  <button mat-icon-button (click)="drawer.toggle()"><mat-icon>menu</mat-icon></button>
+  <img src="assets/train-ticket.svg" alt="logo" class="logo" />
+  <span>National Ticket Booking Spot</span>
+</mat-toolbar>
+
+
+<mat-sidenav-container class="layout mat-typography">
+  <mat-sidenav #drawer mode="side" opened>
+    <mat-nav-list>
+      <a mat-list-item routerLink="/home"><mat-icon>home</mat-icon> Home</a>
+      <a mat-list-item routerLink="/trains"><mat-icon>train</mat-icon> View Trains</a>
+      <a mat-list-item routerLink="/search"><mat-icon>search</mat-icon> Search By TrainNo</a>
+      <a mat-list-item routerLink="/add-train" class="active"><mat-icon>add</mat-icon> Add Train</a>
+      <a mat-list-item routerLink="/delete-train"><mat-icon>delete</mat-icon> Delete Train</a>
+      <a mat-list-item routerLink="/update-train"><mat-icon>edit</mat-icon> Update Train</a>
+      <a mat-list-item routerLink="/logout"><mat-icon>logout</mat-icon> Logout</a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="page">
+      <mat-card class="mat-elevation-z8 form-card">
+        <mat-card-header>
+          <mat-card-title class="card-title">
+            <mat-icon color="primary" class="title-icon">add</mat-icon>
+            Add Train
+          </mat-card-title>
+        </mat-card-header>
+
+        <mat-divider class="divider"></mat-divider>
+
+        <mat-card-content>
+          <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-grid">
+
+            <mat-form-field appearance="outline" floatLabel="always">
+              <mat-label>Train Number</mat-label>
+              <input matInput type="number" formControlName="tr_no" required>
+              <mat-error *ngIf="form.get('tr_no')?.touched && form.get('tr_no')?.hasError('required')">
+                Required
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" floatLabel="always">
+              <mat-label>Train Name</mat-label>
+              <input matInput formControlName="tr_name" required>
+              <mat-error *ngIf="form.get('tr_name')?.touched && form.get('tr_name')?.hasError('required')">
+                Required
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" floatLabel="always">
+              <mat-label>From Station</mat-label>
+              <input matInput formControlName="from_stn" required>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" floatLabel="always">
+              <mat-label>To Station</mat-label>
+              <input matInput formControlName="to_stn" required>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" floatLabel="always">
+              <mat-label>Available Seats</mat-label>
+              <input matInput type="number" formControlName="seats" required>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" floatLabel="always">
+              <mat-label>Fare (INR)</mat-label>
+              <input matInput type="number" step="0.01" formControlName="fare" required>
+            </mat-form-field>
+
+            <div class="actions">
+              <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || loading">
+                <mat-progress-spinner *ngIf="loading" diameter="18" mode="indeterminate"></mat-progress-spinner>
+                <span *ngIf="!loading">Add Train</span>
+              </button>
+            </div>
+
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

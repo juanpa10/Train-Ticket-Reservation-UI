@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TrainService } from '../services/train.service';
+import { NotificationService } from '../services/notification.service';
 import { Booking } from '../models/booking';
 
 @Component({
@@ -14,7 +15,10 @@ export class BookingHistoryComponent implements OnInit {
   userId = 'shashi@demo.com'; // Usuario quemado por ahora
   isLoading = false;
 
-  constructor(private trainService: TrainService) {}
+  constructor(
+    private trainService: TrainService,
+    private notificationService: NotificationService
+  ) {}
 
   ngOnInit(): void {
     this.loadBookingHistory();
@@ -27,10 +31,14 @@ export class BookingHistoryComponent implements OnInit {
         console.log('Booking history fetched successfully:', response);
         this.bookings = response;
         this.isLoading = false;
+        if (response.length > 0) {
+          this.notificationService.showInfo('History Loaded', `Found ${response.length} booking(s)`);
+        }
       },
       error: (error: any) => {
         console.error('Error fetching booking history:', error);
         this.isLoading = false;
+        this.notificationService.showError('Error', 'Failed to load booking history. Please try again.');
       }
     });
   }

@@ -39,7 +39,8 @@
               "src/assets/css/jquery-ui.theme.css",
               "src/assets/css/magnific-popup.css",
               "src/assets/css/morris.css",
-              "src/assets/css/theme.css"
+              "src/assets/css/theme.css",
+              "src/assets/css/pnotify.custom.css"
             ],
             "scripts": [
               "src/assets/js/modernizr.js",
@@ -63,6 +64,7 @@
               "src/assets/js/jquery.flot.categories.js",
               "src/assets/js/jquery.flot.resize.js",
               "src/assets/js/jquery.sparkline.js",
+              "src/assets/js/pnotify.custom.js",
               "src/assets/js/raphael.js",
               "src/assets/js/morris.js",
               "src/assets/js/snap.svg.js",
@@ -77,7 +79,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumError": "3MB"
                 },
                 {
                   "type": "anyComponentStyle",

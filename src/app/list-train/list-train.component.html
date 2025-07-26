@@ -59,3 +59,15 @@
         </table>
     </div>
 </section>
+
+<!-- Confirmation Modal -->
+<app-confirmation-modal
+  [isVisible]="showDeleteModal"
+  [title]="'Delete Train'"
+  [message]="trainToDelete ? 'Are you sure you want to delete train ' + trainToDelete.tr_name + ' (' + trainToDelete.tr_no + ')?' : ''"
+  [details]="'This action cannot be undone. All associated data will be permanently removed.'"
+  [confirmText]="'Delete'"
+  [cancelText]="'Cancel'"
+  (confirmed)="confirmDelete()"
+  (cancelled)="cancelDelete()">
+</app-confirmation-modal>

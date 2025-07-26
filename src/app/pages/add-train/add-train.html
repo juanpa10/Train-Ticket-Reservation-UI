@@ -1,22 +1,10 @@
 <mat-toolbar color="primary" class="toolbar">
-  <button mat-icon-button (click)="drawer.toggle()"><mat-icon>menu</mat-icon></button>
   <img src="assets/train-ticket.svg" alt="logo" class="logo" />
   <span>National Ticket Booking Spot</span>
 </mat-toolbar>
 
 
 <mat-sidenav-container class="layout mat-typography">
-  <mat-sidenav #drawer mode="side" opened>
-    <mat-nav-list>
-      <a mat-list-item routerLink="/home"><mat-icon>home</mat-icon> Home</a>
-      <a mat-list-item routerLink="/trains"><mat-icon>train</mat-icon> View Trains</a>
-      <a mat-list-item routerLink="/search"><mat-icon>search</mat-icon> Search By TrainNo</a>
-      <a mat-list-item routerLink="/add-train" class="active"><mat-icon>add</mat-icon> Add Train</a>
-      <a mat-list-item routerLink="/delete-train"><mat-icon>delete</mat-icon> Delete Train</a>
-      <a mat-list-item routerLink="/update-train"><mat-icon>edit</mat-icon> Update Train</a>
-      <a mat-list-item routerLink="/logout"><mat-icon>logout</mat-icon> Logout</a>
-    </mat-nav-list>
-  </mat-sidenav>
 
   <mat-sidenav-content>
     <div class="page">

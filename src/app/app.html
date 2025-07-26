@@ -62,43 +62,37 @@
           <nav id="menu" class="nav-main" role="navigation">
             <ul class="nav nav-main">
               <li>
-                  <a class="nav-link" href="#">
+                  <a class="nav-link" href="/">
                       <i class="bx bx-home-alt" aria-hidden="true"></i>
-                      <span>Dashboard</span>
+                      <span>Prestamos</span>
                   </a>                        
               </li>
               <li>
-                  <a class="nav-link" href="#">
-                      <i class="bx bx-cart" aria-hidden="true"></i>
-                      <span>Prestamos Activos</span>
-                  </a>                        
-              </li>
-              <li>
-                  <a class="nav-link" href="#">
+                  <a class="nav-link" href="/rates">
                       <i class="bx bx-money" aria-hidden="true"></i>
-                      <span>Tasas de Prestamos</span>
+                      <span>Tarifas de Prestamos</span>
                   </a>                        
               </li>
               <li>
-                  <a class="nav-link" href="#">
+                  <a class="nav-link" href="/books">
                       <i class="bx bx-book" aria-hidden="true"></i>
                       <span>Libros</span>
                   </a>                        
               </li>
               <li>
-                  <a class="nav-link" href="#">
+                  <a class="nav-link" href="/editoriales">
                       <i class="bx bx-building" aria-hidden="true"></i>
                       <span>Editoriales</span>
                   </a>                        
               </li>
               <li>
-                  <a class="nav-link" href="#">
+                  <a class="nav-link" href="/authors">
                       <i class="bx bx-pen" aria-hidden="true"></i>
                       <span>Autores</span>
                   </a>                        
               </li>
                     <li>
-                  <a class="nav-link" href="#">
+                  <a class="nav-link" href="/users">
                       <i class="bx bx-user" aria-hidden="true"></i>
                       <span>Usuarios</span>
                   </a>                        
@@ -109,8 +103,9 @@
       </div>
     </aside>
     <section role="main" class="content-body">
+      <router-outlet></router-outlet>
       <header class="page-header">
-        <h2>Light Sidebar Layout</h2>
+        <h2>{{title}}</h2>
     
         <div class="right-wrapper text-end">
           <ol class="breadcrumbs">
@@ -119,9 +114,11 @@
                 <i class="bx bx-home-alt"></i>
               </a>
             </li>    
-            <li><span>Layouts</span></li>    
-            <li><span>Light Sidebar</span></li>    
+            <li *ngFor="let crumb of breadcrumbs">
+              <span>{{ crumb }}</span>
+            </li>  
           </ol>
+          <a class="sidebar-right-toggle" data-open="sidebar-right"></a>
         </div>
       </header>
     </section>

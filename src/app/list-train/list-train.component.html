@@ -1,0 +1,54 @@
+<section class="card">
+    <header class="card-header">
+        <div class="card-actions">
+            <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+        </div>
+        <h2 class="card-title">Trains</h2>
+    </header>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="mb-3">
+                    <button id="addToTable" (click)="addTrain()" class="btn btn-primary">New Train <i class="fas fa-plus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped mb-0" id="datatable-editable">
+            <thead>
+                <tr>
+                    <th>Train Number</th>
+                    <th>Train Name</th>
+                    <th>From Station</th>
+                    <th>To Station</th>
+                    <th>Seats</th>
+                    <th>Fare</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Train 1</td>
+                    <td>Author 1</td>
+                    <td>Editorial 1</td>
+                    <td>ISBN 1</td>
+                    <td>Año 1</td>
+                    <td>
+                        <button class="btn btn-warning">Edit</button>
+                        <button class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Train 2</td>
+                    <td>Author 2</td>
+                    <td>Editorial 2</td>
+                    <td>ISBN 2</td>
+                    <td>Año 2</td>
+                    <td>
+                        <button class="btn btn-warning">Edit</button>
+                        <button class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>

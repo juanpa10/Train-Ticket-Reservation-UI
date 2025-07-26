@@ -7,7 +7,7 @@ import { Train } from '../models/train';
 @Injectable({ providedIn: 'root' })
 export class TrainService {
   //private base = '/api/trains';
-private base = 'http://localhost:8083/TrainBook/api/trains'; // Si no usas proxy
+  private base = 'http://localhost:8080/TrainBook/api/trains'; // Si no usas proxy
   constructor(private http: HttpClient) {}
 
   addTrain(train: Train): Observable<ApiResponse> {

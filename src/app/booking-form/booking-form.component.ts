@@ -6,6 +6,7 @@ import { Train } from '../models/train';
 import { Book } from '../models/book';
 import { TrainService } from '../services/train.service';
 import { NotificationService } from '../services/notification.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-booking-form',
@@ -14,7 +15,7 @@ import { NotificationService } from '../services/notification.service';
   styleUrl: './booking-form.component.css'
 })
 export class BookingFormComponent implements OnInit {
-  userId = 'shashi@demo.com';
+  userId: string = '';
   selectedTrain: Train | null = null;
   
   // Form fields
@@ -50,11 +51,21 @@ export class BookingFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private trainService: TrainService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private authService: AuthService
   ) {
     // Set default journey date to today in YYYY-MM-DD format for date input
     const today = new Date();
     this.journeyDate = today.toISOString().split('T')[0];
+    
+    // Get current user from localStorage
+    const currentUser = this.authService.getCurrentUser();
+    if (currentUser) {
+      this.userId = currentUser.username;
+    } else {
+      // If no user is logged in, redirect to login
+      this.router.navigate(['/login']);
+    }
   }
 
   ngOnInit(): void {

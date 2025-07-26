@@ -9,7 +9,7 @@ import { Book } from '../models/book';
 export class TrainService {
   //private base = '/api/trains';
   private base = 'http://localhost:8080/TrainBook/api/trains'; // Si no usas proxy
-  private bookingBase = 'http://localhost:8080/TrainBook/api/booking'; // Endpoint para booking
+  private bookingBase = 'http://localhost:8080/TrainBook/api/bookings'; // Endpoint para booking
   
   constructor(private http: HttpClient) {}
 

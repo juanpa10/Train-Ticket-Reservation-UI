@@ -4,6 +4,7 @@ import { FormBuilder, Validators, ReactiveFormsModule, FormsModule } from '@angu
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TrainService } from '../../services/train.service';
+import { NotificationService } from '../../services/notification.service';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
@@ -38,7 +39,8 @@ export class AddTrainComponent implements OnInit {
     private service: TrainService,
     private snack: MatSnackBar,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService
   ) {}
 
   train!: Train;
@@ -75,11 +77,11 @@ export class AddTrainComponent implements OnInit {
       // Update existing train
       this.service.updateTrain(this.train).subscribe({
         next: (res) => {
-          this.snack.open(res.message || 'Train updated successfully', 'OK', { duration: 2500 });
+          this.notificationService.showSuccess('Success', `Train ${this.train.tr_name} updated successfully`);
           this.router.navigate(['/list-train']);
         },
         error: (err) => {
-          this.snack.open(err.error?.message || 'Error updating train', 'OK', { duration: 3500, panelClass: 'snack-error' });
+          this.notificationService.showError('Error', err.error?.message || 'Failed to update train');
           this.loading = false;
         }
       });
@@ -87,12 +89,12 @@ export class AddTrainComponent implements OnInit {
       // Create new train
       this.service.addTrain(this.train).subscribe({
         next: (res) => {
-          this.snack.open(res.message || 'Train created successfully', 'OK', { duration: 2500 });
+          this.notificationService.showSuccess('Success', `Train ${this.train.tr_name} created successfully`);
           this.initializeTrain();
           this.loading = false;
         },
         error: (err) => {
-          this.snack.open(err.error?.message || 'Error creating train', 'OK', { duration: 3500, panelClass: 'snack-error' });
+          this.notificationService.showError('Error', err.error?.message || 'Failed to create train');
           this.loading = false;
         }
       });

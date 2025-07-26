@@ -1,0 +1,44 @@
+<section class="card">
+  <form [formGroup]="form"
+        (ngSubmit)="onDelete()"
+        novalidate>
+
+    <header class="card-header">
+      <h2 class="card-title mb-0">Delete Train</h2>
+    </header>
+
+    <div class="card-body">
+      <div class="form-group row pb-3">
+        <label class="col-sm-3 control-label text-sm-end pt-2" for="tr_no">
+          Train Number
+        </label>
+
+        <div class="col-sm-9">
+          <input  id="tr_no"
+                  type="number"
+                  class="form-control"
+                  formControlName="tr_no"
+                  required
+                  [class.is-invalid]="form.get('tr_no')?.touched && form.get('tr_no')?.invalid">
+
+          <div class="invalid-feedback d-block"
+               *ngIf="form.get('tr_no')?.touched && form.get('tr_no')?.hasError('required')">
+            Required
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="card-footer">
+      <div class="row justify-content-end">
+        <div class="col-sm-9">
+          <button type="submit"
+                  class="btn btn-danger"
+                  [disabled]="form.invalid || loading">
+            {{ loading ? 'Deleting…' : 'Delete' }}
+          </button>
+        </div>
+      </div>
+    </footer>
+  </form>
+</section>

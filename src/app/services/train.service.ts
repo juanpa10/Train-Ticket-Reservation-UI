@@ -9,7 +9,7 @@ import { Booking } from '../models/booking';
 @Injectable({ providedIn: 'root' })
 export class TrainService {
   //private base = '/api/trains';
-  private base = 'http://localhost:8080/TrainBook/api/trains'; // Si no usas proxy
+private base = 'http://localhost:8080/TrainBook/api/trains'; // Si no usas proxy
   private bookingBase = 'http://localhost:8080/TrainBook/api/bookings'; // Endpoint para booking
   
   constructor(private http: HttpClient) {}
@@ -29,4 +29,22 @@ export class TrainService {
   getBookingHistory(mailId: string): Observable<Booking[]> {
     return this.http.get<Booking[]>(`${this.bookingBase}/${mailId}`);
   }
+
+  getAll(): Observable<Train[]> {
+    // necesitas que tu backend soporte GET /api/trains (lista)
+    return this.http.get<Train[]>(this.base);
+  }
+
+  getTrain(id: number): Observable<Train> {
+    return this.http.get<Train>(`${this.base}/${id}`);
+  }
+
+  updateTrain(t: Train): Observable<ApiResponse> {
+    return this.http.put<ApiResponse>(`${this.base}/${t.tr_no}`, t);
+  }
+
+  deleteTrain(id: number): Observable<ApiResponse> {
+    return this.http.delete<ApiResponse>(`${this.base}/${id}`);
+  }
+
 }

@@ -4,6 +4,8 @@ import { ListTrainComponent } from './list-train/list-train.component';
 import { BookingComponent } from './booking/booking.component';
 import { BookingFormComponent } from './booking-form/booking-form.component';
 import { BookingHistoryComponent } from './booking-history/booking-history.component';
+import { DeleteTrainComponent } from './pages/delete-train/delete-train.component';
+import { UpdateTrainComponent } from './pages/update-train/update-train.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'add-train', pathMatch: 'full' },
@@ -20,6 +22,22 @@ export const routes: Routes = [
     data: { 
       title: 'List Train',
       breadcrumbs: ['Home','Trains', 'List Train']    
+    }
+
+  },
+  { path: 'delete-train', 
+    component: DeleteTrainComponent,
+    data: { 
+      title: 'Delete Train',
+      breadcrumbs: ['Home','Trains', 'Delete Train']    
+    }
+
+  },
+  { path: 'update-train', 
+    component: UpdateTrainComponent,
+    data: { 
+      title: 'Update Train',
+      breadcrumbs: ['Home','Trains', 'Update Train']    
     }
 
   },

@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Train } from '../models/train';
+import { Book } from '../models/book';
+import { TrainService } from '../services/train.service';
 
 @Component({
   selector: 'app-booking-form',
@@ -19,6 +21,14 @@ export class BookingFormComponent implements OnInit {
   noOfSeats: number = 1;
   selectedClass: string = '';
   berthPreference: string = '';
+
+  // Modal and payment fields
+  showPaymentModal: boolean = false;
+  cardNumber: string = '';
+  expirationDate: string = '';
+  cvcCode: string = '';
+  cardOwner: string = '';
+  isProcessingPayment: boolean = false;
 
   // Options for selects
   classOptions = [
@@ -37,11 +47,12 @@ export class BookingFormComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private trainService: TrainService
   ) {
-    // Set default journey date to today (26/07/2025 format)
+    // Set default journey date to today in YYYY-MM-DD format for date input
     const today = new Date();
-    this.journeyDate = `${today.getDate().toString().padStart(2, '0')}/${(today.getMonth() + 1).toString().padStart(2, '0')}/${today.getFullYear()}`;
+    this.journeyDate = today.toISOString().split('T')[0];
   }
 
   ngOnInit(): void {
@@ -65,23 +76,80 @@ export class BookingFormComponent implements OnInit {
 
   onPayAndBook(): void {
     if (this.isFormValid()) {
-      const bookingData = {
-        userId: this.userId,
-        train: this.selectedTrain,
-        journeyDate: this.journeyDate,
-        noOfSeats: this.noOfSeats,
-        selectedClass: this.selectedClass,
-        berthPreference: this.berthPreference
-      };
-
-      console.log('Booking data:', bookingData);
-      
-      // Here you would typically call a service to submit the booking
-      alert('Booking successful!');
-      this.router.navigate(['/booking']);
+      // Show payment modal instead of directly booking
+      this.showPaymentModal = true;
     } else {
       alert('Please fill in all required fields.');
     }
+  }
+
+  // Close payment modal
+  closePaymentModal(): void {
+    this.showPaymentModal = false;
+    this.clearPaymentFields();
+  }
+
+  // Clear payment form fields
+  clearPaymentFields(): void {
+    this.cardNumber = '';
+    this.expirationDate = '';
+    this.cvcCode = '';
+    this.cardOwner = '';
+  }
+
+  // Validate payment form
+  isPaymentFormValid(): boolean {
+    return !!(
+      this.cardNumber &&
+      this.expirationDate &&
+      this.cvcCode &&
+      this.cardOwner
+    );
+  }
+
+  // Confirm payment and create booking
+  confirmPayment(): void {
+    if (!this.isPaymentFormValid()) {
+      alert('Please fill in all payment fields.');
+      return;
+    }
+
+    if (!this.selectedTrain) {
+      alert('Train information is missing.');
+      return;
+    }
+
+    this.isProcessingPayment = true;
+
+    // Calculate total amount (fare * number of seats)
+    const totalAmount = (this.selectedTrain.fare * this.noOfSeats).toString();
+
+    // Create booking object
+    const booking: Book = {
+      mailId: this.userId,
+      from_stn: this.selectedTrain.from_stn,
+      to_stn: this.selectedTrain.to_stn,
+      date: this.journeyDate, // YYYY-MM-DD format
+      tr_no: this.selectedTrain.tr_no,
+      amount: totalAmount,
+      seats: this.noOfSeats
+    };
+
+    // Call booking service
+    this.trainService.bookTrain(booking).subscribe({
+      next: (response) => {
+        this.isProcessingPayment = false;
+        console.log('Booking successful:', response);
+        alert('Booking confirmed successfully!');
+        this.closePaymentModal();
+        this.router.navigate(['/booking']);
+      },
+      error: (error) => {
+        this.isProcessingPayment = false;
+        console.error('Booking failed:', error);
+        alert('Booking failed. Please try again.');
+      }
+    });
   }
 
   isFormValid(): boolean {
@@ -96,5 +164,17 @@ export class BookingFormComponent implements OnInit {
 
   goBack(): void {
     this.router.navigate(['/booking']);
+  }
+
+  // Función para formatear la fecha a DD/MM/YYYY
+  formatDateForDisplay(dateString: string): string {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
+  }
+
+  // Función para obtener la fecha mínima (hoy)
+  getMinDate(): string {
+    return new Date().toISOString().split('T')[0];
   }
 }

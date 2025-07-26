@@ -66,7 +66,14 @@
                         <div class="form-group row pb-3">
                             <label class="col-sm-3 control-label text-sm-end pt-2">Journey Date</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" [(ngModel)]="journeyDate" placeholder="DD/MM/YYYY" required>
+                                <input type="date" 
+                                       class="form-control" 
+                                       [(ngModel)]="journeyDate" 
+                                       [min]="getMinDate()" 
+                                       required>
+                                <small class="form-text text-muted">
+                                    Selected date: {{ formatDateForDisplay(journeyDate) }}
+                                </small>
                             </div>
                         </div>
                     </div>
@@ -128,3 +135,80 @@
         </div>
     </div>
 </section>
+
+<!-- Payment Modal -->
+<div class="modal" [class.show]="showPaymentModal" [style.display]="showPaymentModal ? 'block' : 'none'" 
+     style="background-color: rgba(0,0,0,0.5);" *ngIf="showPaymentModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Payment Details</h5>
+                <button type="button" class="btn-close" (click)="closePaymentModal()"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Booking Summary -->
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h6 class="mb-0">Booking Summary</h6>
+                    </div>
+                    <div class="card-body" *ngIf="selectedTrain">
+                        <div class="row mb-2">
+                            <div class="col-sm-6"><strong>Train:</strong> {{ selectedTrain.tr_name }} ({{ selectedTrain.tr_no }})</div>
+                            <div class="col-sm-6"><strong>Route:</strong> {{ selectedTrain.from_stn }} → {{ selectedTrain.to_stn }}</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-6"><strong>Date:</strong> {{ formatDateForDisplay(journeyDate) }}</div>
+                            <div class="col-sm-6"><strong>Class:</strong> {{ selectedClass }}</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-6"><strong>Seats:</strong> {{ noOfSeats }}</div>
+                            <div class="col-sm-6"><strong>Total Amount:</strong> ₹{{ (selectedTrain.fare * noOfSeats).toFixed(2) }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Form -->
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="mb-0">Payment Information</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Card Number</label>
+                                <input type="text" class="form-control" [(ngModel)]="cardNumber" 
+                                       placeholder="1234 5678 9012 3456" maxlength="19" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Card Owner</label>
+                                <input type="text" class="form-control" [(ngModel)]="cardOwner" 
+                                       placeholder="John Doe" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Expiration Date</label>
+                                <input type="text" class="form-control" [(ngModel)]="expirationDate" 
+                                       placeholder="MM/YY" maxlength="5" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">CVC Code</label>
+                                <input type="text" class="form-control" [(ngModel)]="cvcCode" 
+                                       placeholder="123" maxlength="4" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="closePaymentModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" 
+                        (click)="confirmPayment()" 
+                        [disabled]="!isPaymentFormValid() || isProcessingPayment">
+                    <span *ngIf="isProcessingPayment" class="spinner-border spinner-border-sm me-2"></span>
+                    {{ isProcessingPayment ? 'Processing...' : 'Confirm Payment' }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

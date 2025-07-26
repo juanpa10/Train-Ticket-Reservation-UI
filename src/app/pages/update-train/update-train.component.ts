@@ -11,6 +11,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { TrainService } from '../../services/train.service';
+import { NotificationService } from '../../services/notification.service';
 import { Train } from '../../models/train';
 
 type SearchForm = {
@@ -48,6 +49,7 @@ export class UpdateTrainComponent {
   private snack   = inject(MatSnackBar);
   private route   = inject(ActivatedRoute);
   private router  = inject(Router);
+  private notificationService = inject(NotificationService);
 
   // ---------- formularios ----------
   searchForm = this.fb.group<SearchForm>({
@@ -91,11 +93,12 @@ export class UpdateTrainComponent {
           fare: t.fare
         });
         this.searching = false;
+        this.notificationService.showSuccess('Train Found', `Train ${t.tr_name} loaded successfully`);
       },
       error: err => {
         this.found = false;
         this.searching = false;
-        this.snack.open(err.error?.message || 'Train not found', 'OK', { duration: 2500 });
+        this.notificationService.showError('Error', err.error?.message || 'Train not found');
       }
     });
   }
@@ -109,12 +112,12 @@ export class UpdateTrainComponent {
     this.service.updateTrain(train).subscribe({
       next: res => {
         this.loading = false;
-        this.snack.open(res.message || 'Updated', 'OK', { duration: 2500 });
+        this.notificationService.showSuccess('Success', `Train ${train.tr_name} updated successfully`);
         this.router.navigateByUrl('/');   
       },
       error: err => {
         this.loading = false;
-        this.snack.open(err.error?.message || 'Error updating', 'OK', { duration: 3500 });
+        this.notificationService.showError('Error', err.error?.message || 'Failed to update train');
       }
     });
   }

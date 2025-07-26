@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { Train } from '../models/train';
 import { Book } from '../models/book';
 import { TrainService } from '../services/train.service';
+import { NotificationService } from '../services/notification.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-booking-form',
@@ -13,7 +15,7 @@ import { TrainService } from '../services/train.service';
   styleUrl: './booking-form.component.css'
 })
 export class BookingFormComponent implements OnInit {
-  userId = 'shashi@demo.com';
+  userId: string = '';
   selectedTrain: Train | null = null;
   
   // Form fields
@@ -48,11 +50,22 @@ export class BookingFormComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private trainService: TrainService
+    private trainService: TrainService,
+    private notificationService: NotificationService,
+    private authService: AuthService
   ) {
     // Set default journey date to today in YYYY-MM-DD format for date input
     const today = new Date();
     this.journeyDate = today.toISOString().split('T')[0];
+    
+    // Get current user from localStorage
+    const currentUser = this.authService.getCurrentUser();
+    if (currentUser) {
+      this.userId = currentUser.username;
+    } else {
+      // If no user is logged in, redirect to login
+      this.router.navigate(['/login']);
+    }
   }
 
   ngOnInit(): void {
@@ -110,12 +123,12 @@ export class BookingFormComponent implements OnInit {
   // Confirm payment and create booking
   confirmPayment(): void {
     if (!this.isPaymentFormValid()) {
-      alert('Please fill in all payment fields.');
+      this.notificationService.showError('Validation Error', 'Please fill in all payment fields.');
       return;
     }
 
     if (!this.selectedTrain) {
-      alert('Train information is missing.');
+      this.notificationService.showError('Error', 'Train information is missing.');
       return;
     }
 
@@ -140,14 +153,14 @@ export class BookingFormComponent implements OnInit {
       next: (response) => {
         this.isProcessingPayment = false;
         console.log('Booking successful:', response);
-        alert('Booking confirmed successfully!');
+        this.notificationService.showSuccess('Success', 'Booking confirmed successfully!');
         this.closePaymentModal();
         this.router.navigate(['/booking']);
       },
       error: (error) => {
         this.isProcessingPayment = false;
         console.error('Booking failed:', error);
-        alert('Booking failed. Please try again.');
+        this.notificationService.showError('Booking Failed', 'Unable to confirm booking. Please try again.');
       }
     });
   }

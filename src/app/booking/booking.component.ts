@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TrainService } from '../services/train.service';
+import { NotificationService } from '../services/notification.service';
 import { Train } from '../models/train';
 import { CommonModule } from '@angular/common';
 
@@ -16,7 +17,8 @@ export class BookingComponent implements OnInit {
 
   constructor(
     private trainService: TrainService,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService
   ) { }
 
   // Función para generar tiempo aleatorio en formato HH:mm
@@ -56,9 +58,14 @@ export class BookingComponent implements OnInit {
         this.trains.forEach(train => {
           this.trainTimes.set(train.tr_no, this.generateRandomTime());
         });
+        
+        if (response.length > 0) {
+          this.notificationService.showInfo('Trains Loaded', `${response.length} trains available for booking`);
+        }
       },
       error: (error) => { 
         console.error('Error fetching trains:', error);
+        this.notificationService.showError('Error', 'Failed to load trains. Please refresh the page.');
       }
     });
   }

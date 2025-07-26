@@ -4,6 +4,7 @@ import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { TrainService } from '../../services/train.service';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-delete-train',
@@ -22,6 +23,7 @@ export class DeleteTrainComponent {
   private fb     = inject(FormBuilder);
   private service = inject(TrainService);
   private snack   = inject(MatSnackBar);
+  private notificationService = inject(NotificationService);
 
   form = this.fb.group({
     tr_no: [null, Validators.required]
@@ -36,12 +38,12 @@ export class DeleteTrainComponent {
     this.service.deleteTrain(id).subscribe({
       next: res => {
         this.loading = false;
-        this.snack.open(res.message || 'Deleted', 'OK', { duration: 2500 });
+        this.notificationService.showSuccess('Success', `Train ${id} deleted successfully`);
         this.form.reset();
       },
       error: err => {
         this.loading = false;
-        this.snack.open(err.error?.message || 'Error', 'OK', { duration: 3000 });
+        this.notificationService.showError('Error', err.error?.message || 'Failed to delete train');
       }
     });
   }

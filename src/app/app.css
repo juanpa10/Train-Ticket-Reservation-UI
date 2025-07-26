@@ -1,0 +1,23 @@
+/* Layout styles for different views */
+
+/* Login layout - full screen without sidebar/header */
+.login-layout {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Fix for dropdown menu positioning */
+.userbox .dropdown-menu {
+  position: absolute;
+  right: 0;
+  left: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .login-layout {
+    width: 100%;
+    height: 100%;
+  }
+}

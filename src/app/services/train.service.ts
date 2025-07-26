@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ApiResponse, TrainListResponse } from '../models/api-response';
 import { Train } from '../models/train';
 import { Book } from '../models/book';
+import { Booking } from '../models/booking';
 
 @Injectable({ providedIn: 'root' })
 export class TrainService {
@@ -23,5 +24,9 @@ export class TrainService {
 
   bookTrain(booking: Book): Observable<ApiResponse> {
     return this.http.post<ApiResponse>(this.bookingBase, booking);
+  }
+
+  getBookingHistory(mailId: string): Observable<Booking[]> {
+    return this.http.get<Booking[]>(`${this.bookingBase}/${mailId}`);
   }
 }

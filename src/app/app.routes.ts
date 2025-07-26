@@ -3,6 +3,7 @@ import { AddTrainComponent } from './pages/add-train/add-train';
 import { ListTrainComponent } from './list-train/list-train.component';
 import { BookingComponent } from './booking/booking.component';
 import { BookingFormComponent } from './booking-form/booking-form.component';
+import { BookingHistoryComponent } from './booking-history/booking-history.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'add-train', pathMatch: 'full' },
@@ -36,6 +37,14 @@ export const routes: Routes = [
     data: { 
       title: 'Book Ticket',
       breadcrumbs: ['Home','Booking', 'Book Ticket']    
+    }
+  },
+  { 
+    path: 'booking-history',
+    component: BookingHistoryComponent,
+    data: { 
+      title: 'Booking History',
+      breadcrumbs: ['Home','Booking', 'History']    
     }
   }
 ];

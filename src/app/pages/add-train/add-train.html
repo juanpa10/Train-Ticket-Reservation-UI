@@ -9,7 +9,7 @@
                         <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
                         <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
                     </div>
-                    <h2 class="card-title">{{ true ? 'New Train' : 'Edit Train' }}</h2>
+                    <h2 class="card-title">{{ isEditMode ? 'Edit Train' : 'New Train' }}</h2>
                 </header>
                 <div class="card-body">
                     <div class="form-group row pb-3">
@@ -62,7 +62,8 @@
                 <footer class="card-footer">
                     <div class="row justify-content-end">
                         <div class="col-sm-9">
-                            <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+                            <button class="btn btn-secondary me-2" (click)="cancel()">Cancel</button>
+                            <button class="btn btn-primary" (click)="onSubmit()">{{ isEditMode ? 'Update' : 'Save' }}</button>
                         </div>
                     </div>
                 </footer>

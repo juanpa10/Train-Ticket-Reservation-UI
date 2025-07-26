@@ -12,7 +12,7 @@ export class ListTrainComponent implements OnInit {
   constructor(private service: TrainService) { }
 
     ngOnInit() {
-        // Initialization logic here
+
     }
 
     addTrain() {

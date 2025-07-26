@@ -1,0 +1,38 @@
+<section class="card">
+    <header class="card-header">
+        <div class="card-actions">
+            <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+        </div>
+        <h2 class="card-title">National Ticket Booking Spot</h2>
+    </header>
+    <div class="card-body">
+        <table class="table table-bordered table-striped mb-0" id="datatable-editable">
+            <thead>
+                <tr>
+                    <th>Train Name</th>
+                    <th>Train Number</th>
+                    <th>From Station</th>
+                    <th>To Station</th>
+                    <th>Time</th>
+                    <th>Seats Available</th>
+                    <th>Fare (INR)</th>
+                    <th>Booking</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let train of trains">
+                    <td>{{ train.tr_name }}</td>
+                    <td>{{ train.tr_no }}</td>
+                    <td>{{ train.from_stn }}</td>
+                    <td>{{ train.to_stn }}</td>
+                    <td>{{ getTrainTime(train.tr_no) }}</td>
+                    <td>{{ train.seats }}</td>
+                    <td>{{ train.fare }}</td>
+                    <td>
+                        <button class="btn btn-primary" (click)="bookTrain(train)">Book Now</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>

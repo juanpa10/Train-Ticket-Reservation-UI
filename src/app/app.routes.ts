@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { AddTrainComponent } from './pages/add-train/add-train';
 import { ListTrainComponent } from './list-train/list-train.component';
+import { BookingComponent } from './booking/booking.component';
+import { BookingFormComponent } from './booking-form/booking-form.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'add-train', pathMatch: 'full' },
@@ -20,4 +22,20 @@ export const routes: Routes = [
     }
 
   },
+  { 
+    path: 'booking',
+    component: BookingComponent,
+    data: { 
+      title: 'Booking',
+      breadcrumbs: ['Home','Booking']    
+    }
+  },
+  { 
+    path: 'booking-form',
+    component: BookingFormComponent,
+    data: { 
+      title: 'Book Ticket',
+      breadcrumbs: ['Home','Booking', 'Book Ticket']    
+    }
+  }
 ];

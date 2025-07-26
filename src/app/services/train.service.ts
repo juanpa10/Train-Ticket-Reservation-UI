@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ApiResponse } from '../models/api-response';
+import { ApiResponse, TrainListResponse } from '../models/api-response';
 import { Train } from '../models/train';
 
 @Injectable({ providedIn: 'root' })
@@ -12,5 +12,9 @@ export class TrainService {
 
   addTrain(train: Train): Observable<ApiResponse> {
     return this.http.post<ApiResponse>(this.base, train);
+  }
+
+  getTrains(): Observable<Train[]> {
+    return this.http.get<Train[]>(this.base);
   }
 }

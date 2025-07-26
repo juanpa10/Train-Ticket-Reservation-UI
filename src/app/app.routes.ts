@@ -8,7 +8,7 @@ import { DeleteTrainComponent } from './pages/delete-train/delete-train.componen
 import { UpdateTrainComponent } from './pages/update-train/update-train.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'add-train', pathMatch: 'full' },
+  { path: '', redirectTo: 'list-train', pathMatch: 'full' },
   { path: 'add-train', 
     component: AddTrainComponent,
     data: { 

@@ -1,127 +1,131 @@
+<!-- update-train.component.html -->
 <div class="page">
 
-  <section class="card mb-4" *ngIf="!found">
-    <header class="card-header">
-      <h2 class="card-title mb-0">
-        <i class="bx bx-search me-1 text-primary"></i>
-        Find Train
-      </h2>
-    </header>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-6">
+        <section class="card mb-4" *ngIf="!found">
+          <header class="card-header">
+            <h2 class="card-title mb-0">
+              <i class="bx bx-search me-1 text-primary"></i>
+              Find Train
+            </h2>
+          </header>
 
-    <div class="card-body">
-      <form [formGroup]="searchForm"
-            (ngSubmit)="loadTrain()"
-            class="row g-3 align-items-end">
+          <div class="card-body">
+            <form [formGroup]="searchForm"
+                  (ngSubmit)="loadTrain()"
+                  class="row g-3 align-items-end">
 
-        <div class="col-md-8">
-          <label for="search_tr_no" class="form-label">Train Number</label>
-          <input   id="search_tr_no"
-                   type="number"
-                   class="form-control"
-                   formControlName="tr_no"
-                   required
-                   [class.is-invalid]="searchForm.get('tr_no')?.touched && searchForm.get('tr_no')?.invalid">
+              <div class="col-8">
+                <label for="search_tr_no" class="form-label">Train Number</label>
+                <input  id="search_tr_no"
+                        type="number"
+                        class="form-control"
+                        formControlName="tr_no"
+                        required
+                        [class.is-invalid]="searchForm.get('tr_no')?.touched && searchForm.get('tr_no')?.invalid">
+                <div class="invalid-feedback">Required</div>
+              </div>
 
-          <div class="invalid-feedback">
-            Required
+              <div class="col-4 d-grid">
+                <button type="submit"
+                        class="btn btn-primary"
+                        [disabled]="searchForm.invalid || searching">
+                  <span *ngIf="searching"
+                        class="spinner-border spinner-border-sm me-1"></span>
+                  <span *ngIf="!searching">Load</span>
+                </button>
+              </div>
+
+            </form>
           </div>
-        </div>
+        </section>
+        <section class="card" *ngIf="found">
+          <header class="card-header">
+            <h2 class="card-title mb-0">
+              <i class="bx bx-edit me-1 text-primary"></i>
+              Update Train
+            </h2>
+          </header>
 
-        <div class="col-md-4 d-grid">
-          <button  type="submit"
-                   class="btn btn-primary"
-                   [disabled]="searchForm.invalid || searching">
-            <span *ngIf="searching" class="spinner-border spinner-border-sm me-1"></span>
-            <span *ngIf="!searching">Load</span>
-          </button>
-        </div>
+          <div class="card-body">
+            <form [formGroup]="form"
+                  (ngSubmit)="onSubmit()"
+                  class="row g-3">
 
-      </form>
-    </div>
-  </section>
+              <div class="col-12">
+                <label for="tr_no" class="form-label">Train Number</label>
+                <input id="tr_no"
+                       type="number"
+                       class="form-control"
+                       formControlName="tr_no"
+                       [disabled]="true">
+              </div>
 
-  <section class="card" *ngIf="found">
-    <header class="card-header">
-      <h2 class="card-title mb-0">
-        <i class="bx bx-edit me-1 text-primary"></i>
-        Update Train
-      </h2>
-    </header>
+              <div class="col-12">
+                <label for="tr_name" class="form-label">Train Name</label>
+                <input id="tr_name"
+                       type="text"
+                       class="form-control"
+                       formControlName="tr_name"
+                       required>
+              </div>
 
-    <div class="card-body">
-      <form [formGroup]="form"
-            (ngSubmit)="onSubmit()">
+              <div class="col-12 col-md-6">
+                <label for="from_stn" class="form-label">From Station</label>
+                <input id="from_stn"
+                       type="text"
+                       class="form-control"
+                       formControlName="from_stn"
+                       required>
+              </div>
 
-        <div class="row g-3">
+              <div class="col-12 col-md-6">
+                <label for="to_stn" class="form-label">To Station</label>
+                <input id="to_stn"
+                       type="text"
+                       class="form-control"
+                       formControlName="to_stn"
+                       required>
+              </div>
 
-          <div class="col-md-6">
-            <label for="tr_no" class="form-label">Train Number</label>
-            <input  id="tr_no"
-                    type="number"
-                    class="form-control"
-                    formControlName="tr_no"
-                    [disabled]="true">
+              <div class="col-12 col-md-6">
+                <label for="seats" class="form-label">Available Seats</label>
+                <input id="seats"
+                       type="number"
+                       class="form-control"
+                       formControlName="seats"
+                       required>
+              </div>
+
+              <div class="col-12 col-md-6">
+                <label for="fare" class="form-label">Fare (INR)</label>
+                <input id="fare"
+                       type="number"
+                       step="0.01"
+                       class="form-control"
+                       formControlName="fare"
+                       required>
+              </div>
+
+              <!-- Botón -->
+              <div class="col-12 d-flex justify-content-end mt-3">
+                <button type="submit"
+                        class="btn btn-primary"
+                        [disabled]="form.invalid || loading">
+                  <span *ngIf="loading"
+                        class="spinner-border spinner-border-sm me-1"></span>
+                  <span *ngIf="!loading">Save Changes</span>
+                </button>
+              </div>
+
+            </form>
           </div>
+        </section>
 
-          <div class="col-md-6">
-            <label for="tr_name" class="form-label">Train Name</label>
-            <input id="tr_name"
-                   type="text"
-                   class="form-control"
-                   formControlName="tr_name"
-                   required>
-          </div>
+      </div><!-- /.col -->
+    </div><!-- /.row -->
+  </div><!-- /.container -->
 
-          <div class="col-md-6">
-            <label for="from_stn" class="form-label">From Station</label>
-            <input id="from_stn"
-                   type="text"
-                   class="form-control"
-                   formControlName="from_stn"
-                   required>
-          </div>
-
-          <div class="col-md-6">
-            <label for="to_stn" class="form-label">To Station</label>
-            <input id="to_stn"
-                   type="text"
-                   class="form-control"
-                   formControlName="to_stn"
-                   required>
-          </div>
-
-          <div class="col-md-6">
-            <label for="seats" class="form-label">Available Seats</label>
-            <input id="seats"
-                   type="number"
-                   class="form-control"
-                   formControlName="seats"
-                   required>
-          </div>
-
-          <div class="col-md-6">
-            <label for="fare" class="form-label">Fare (INR)</label>
-            <input id="fare"
-                   type="number"
-                   step="0.01"
-                   class="form-control"
-                   formControlName="fare"
-                   required>
-          </div>
-
-        </div>
-
-        <div class="mt-4 d-flex justify-content-end">
-          <button  type="submit"
-                   class="btn btn-primary"
-                   [disabled]="form.invalid || loading">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
-            <span *ngIf="!loading">Save Changes</span>
-          </button>
-        </div>
-
-      </form>
-    </div>
-  </section>
-
-</div>
+</div><!-- /.page -->

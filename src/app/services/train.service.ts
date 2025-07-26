@@ -1,17 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+
+
 import { ApiResponse, TrainListResponse } from '../models/api-response';
 import { Train } from '../models/train';
 import { Book } from '../models/book';
 import { Booking } from '../models/booking';
+import { environment } from '../../enviroments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class TrainService {
-  //private base = '/api/trains';
-private base = 'http://localhost:8080/TrainBook/api/trains'; // Si no usas proxy
-  private bookingBase = 'http://localhost:8080/TrainBook/api/bookings'; // Endpoint para booking
-  
+
+  /** base URL para todos los servicios REST; cambia según el *environment*   */
+  private readonly base       = `${environment.apiUrl}/trains`;
+  private readonly bookingBase = `${environment.apiUrl}/bookings`;
+
   constructor(private http: HttpClient) {}
 
   addTrain(train: Train): Observable<ApiResponse> {
@@ -19,19 +23,6 @@ private base = 'http://localhost:8080/TrainBook/api/trains'; // Si no usas proxy
   }
 
   getTrains(): Observable<Train[]> {
-    return this.http.get<Train[]>(this.base);
-  }
-
-  bookTrain(booking: Book): Observable<ApiResponse> {
-    return this.http.post<ApiResponse>(this.bookingBase, booking);
-  }
-
-  getBookingHistory(mailId: string): Observable<Booking[]> {
-    return this.http.get<Booking[]>(`${this.bookingBase}/${mailId}`);
-  }
-
-  getAll(): Observable<Train[]> {
-    // necesitas que tu backend soporte GET /api/trains (lista)
     return this.http.get<Train[]>(this.base);
   }
 
@@ -47,4 +38,11 @@ private base = 'http://localhost:8080/TrainBook/api/trains'; // Si no usas proxy
     return this.http.delete<ApiResponse>(`${this.base}/${id}`);
   }
 
+  bookTrain(booking: Book): Observable<ApiResponse> {
+    return this.http.post<ApiResponse>(this.bookingBase, booking);
+  }
+
+  getBookingHistory(mailId: string): Observable<Booking[]> {
+    return this.http.get<Booking[]>(`${this.bookingBase}/${mailId}`);
+  }
 }

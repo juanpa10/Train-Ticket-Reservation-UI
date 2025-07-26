@@ -57,3 +57,9 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+#### CON DOCKER #######
+
+docker build -t trainbook-ui .
+
+docker run -d -p 4200:80 --name trainbook-ui trainbook-ui

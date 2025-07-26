@@ -1,0 +1,84 @@
+<section class="card">
+  <div class="row">
+    <div class="col-lg-12">
+      <section class="card">
+        <header class="card-header">
+          <div class="card-actions">
+            <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+            <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+          </div>
+          <h2 class="card-title">Train Management</h2>
+        </header>
+        <div class="card-body">
+          <!-- Add Train Button -->
+          <div class="row mb-3">
+            <div class="col-12">
+              <button class="btn btn-primary" (click)="addNewTrain()">
+                <i class="fas fa-plus"></i> Add New Train
+              </button>
+            </div>
+          </div>
+          
+          <!-- Loading State -->
+          <div *ngIf="loading" class="text-center">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p>Loading trains...</p>
+          </div>
+          
+          <!-- Error State -->
+          <div *ngIf="error" class="alert alert-danger" role="alert">
+            {{ error }}
+            <button class="btn btn-sm btn-outline-danger ms-2" (click)="loadTrains()">Retry</button>
+          </div>
+          
+          <!-- Trains Table -->
+          <div *ngIf="!loading && !error">
+            <div *ngIf="trains.length === 0" class="alert alert-info">
+              No trains found. <a href="#" (click)="addNewTrain()" class="alert-link">Add the first train</a>.
+            </div>
+            
+            <div *ngIf="trains.length > 0" class="table-responsive">
+              <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                  <tr>
+                    <th>Train No</th>
+                    <th>Train Name</th>
+                    <th>From Station</th>
+                    <th>To Station</th>
+                    <th>Seats</th>
+                    <th>Fare (€)</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let train of trains">
+                    <td>{{ train.tr_no }}</td>
+                    <td>{{ train.tr_name }}</td>
+                    <td>{{ train.from_stn }}</td>
+                    <td>{{ train.to_stn }}</td>
+                    <td>{{ train.seats }}</td>
+                    <td>{{ train.fare | currency:'EUR':'symbol':'1.2-2' }}</td>
+                    <td>
+                      <button class="btn btn-sm btn-outline-primary me-1" 
+                              (click)="editTrain(train)"
+                              title="Edit Train">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-sm btn-outline-danger" 
+                              (click)="deleteTrain(train)"
+                              title="Delete Train">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>

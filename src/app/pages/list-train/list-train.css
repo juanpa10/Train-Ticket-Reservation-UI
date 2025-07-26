@@ -1,0 +1,69 @@
+/* Train list specific styles */
+.table-responsive {
+  margin-top: 1rem;
+}
+
+.btn-group-actions {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.table th {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+.spinner-border {
+  width: 2rem;
+  height: 2rem;
+}
+
+.alert-link {
+  text-decoration: none;
+}
+
+.alert-link:hover {
+  text-decoration: underline;
+}
+
+/* Action buttons styling */
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.btn-outline-primary:hover {
+  color: #fff;
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+.btn-outline-danger:hover {
+  color: #fff;
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+/* Card header styling */
+.card-title {
+  color: #495057;
+  font-weight: 600;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+  .table-responsive {
+    font-size: 0.875rem;
+  }
+  
+  .btn-sm {
+    padding: 0.125rem 0.25rem;
+    font-size: 0.75rem;
+  }
+}

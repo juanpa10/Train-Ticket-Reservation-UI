@@ -1,0 +1,214 @@
+<section class="card">
+    <div>
+        <div class="row">
+            <div class="col-lg-12">
+                <section class="card">
+                    <header class="card-header">
+                        <div class="card-actions">
+                            <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                            <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+                        </div>
+                        <h2 class="card-title">Book Train Ticket</h2>
+                    </header>
+
+                    <!-- User ID (Read-only) -->
+                    <div class="card-body">
+                        <div class="form-group row pb-3">
+                            <label class="col-sm-3 control-label text-sm-end pt-2">User ID</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" [value]="userId" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Train Number (Read-only) -->
+                    <div class="card-body" *ngIf="selectedTrain">
+                        <div class="form-group row pb-3">
+                            <label class="col-sm-3 control-label text-sm-end pt-2">Train Number</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" [value]="selectedTrain.tr_no" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Train Name (Read-only) -->
+                    <div class="card-body" *ngIf="selectedTrain">
+                        <div class="form-group row pb-3">
+                            <label class="col-sm-3 control-label text-sm-end pt-2">Train Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" [value]="selectedTrain.tr_name" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- From Station (Read-only) -->
+                    <div class="card-body" *ngIf="selectedTrain">
+                        <div class="form-group row pb-3">
+                            <label class="col-sm-3 control-label text-sm-end pt-2">From Station</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" [value]="selectedTrain.from_stn" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- To Station (Read-only) -->
+                    <div class="card-body" *ngIf="selectedTrain">
+                        <div class="form-group row pb-3">
+                            <label class="col-sm-3 control-label text-sm-end pt-2">To Station</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" [value]="selectedTrain.to_stn" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Journey Date -->
+                    <div class="card-body">
+                        <div class="form-group row pb-3">
+                            <label class="col-sm-3 control-label text-sm-end pt-2">Journey Date</label>
+                            <div class="col-sm-9">
+                                <input type="date" 
+                                       class="form-control" 
+                                       [(ngModel)]="journeyDate" 
+                                       [min]="getMinDate()" 
+                                       required>
+                                <small class="form-text text-muted">
+                                    Selected date: {{ formatDateForDisplay(journeyDate) }}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Number of Seats -->
+                    <div class="card-body">
+                        <div class="form-group row pb-3">
+                            <label class="col-sm-3 control-label text-sm-end pt-2">No Of Seats</label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control" [(ngModel)]="noOfSeats" min="1" [max]="selectedTrain?.seats || 1" required>
+                                <small class="form-text text-muted" *ngIf="selectedTrain">
+                                    Available seats: {{ selectedTrain.seats }}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Select Class -->
+                    <div class="card-body">
+                        <div class="form-group row pb-3">
+                            <label class="col-sm-3 control-label text-sm-end pt-2">Select Class</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" [(ngModel)]="selectedClass" required>
+                                    <option value="">Select Class</option>
+                                    <option *ngFor="let option of classOptions" [value]="option.value">
+                                        {{ option.label }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Berth Preference -->
+                    <div class="card-body">
+                        <div class="form-group row pb-3">
+                            <label class="col-sm-3 control-label text-sm-end pt-2">Berth Preference</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" [(ngModel)]="berthPreference">
+                                    <option *ngFor="let option of berthOptions" [value]="option.value">
+                                        {{ option.label }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <footer class="card-footer">
+                        <div class="row justify-content-end">
+                            <div class="col-sm-9">
+                                <button class="btn btn-secondary me-2" (click)="goBack()">Back</button>
+                                <button class="btn btn-primary" (click)="onPayAndBook()" [disabled]="!isFormValid()">
+                                    PAY AND BOOK
+                                </button>
+                            </div>
+                        </div>
+                    </footer>
+                </section>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Payment Modal -->
+<div class="modal" [class.show]="showPaymentModal" [style.display]="showPaymentModal ? 'block' : 'none'" 
+     style="background-color: rgba(0,0,0,0.5);" *ngIf="showPaymentModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Payment Details</h5>
+                <button type="button" class="btn-close" (click)="closePaymentModal()"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Booking Summary -->
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h6 class="mb-0">Booking Summary</h6>
+                    </div>
+                    <div class="card-body" *ngIf="selectedTrain">
+                        <div class="row mb-2">
+                            <div class="col-sm-6"><strong>Train:</strong> {{ selectedTrain.tr_name }} ({{ selectedTrain.tr_no }})</div>
+                            <div class="col-sm-6"><strong>Route:</strong> {{ selectedTrain.from_stn }} → {{ selectedTrain.to_stn }}</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-6"><strong>Date:</strong> {{ formatDateForDisplay(journeyDate) }}</div>
+                            <div class="col-sm-6"><strong>Class:</strong> {{ selectedClass }}</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-6"><strong>Seats:</strong> {{ noOfSeats }}</div>
+                            <div class="col-sm-6"><strong>Total Amount:</strong> USD{{ (selectedTrain.fare * noOfSeats).toFixed(2) }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Form -->
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="mb-0">Payment Information</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Card Number</label>
+                                <input type="text" class="form-control" [(ngModel)]="cardNumber" 
+                                       placeholder="1234 5678 9012 3456" maxlength="19" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Card Owner</label>
+                                <input type="text" class="form-control" [(ngModel)]="cardOwner" 
+                                       placeholder="John Doe" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Expiration Date</label>
+                                <input type="text" class="form-control" [(ngModel)]="expirationDate" 
+                                       placeholder="MM/YY" maxlength="5" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">CVC Code</label>
+                                <input type="text" class="form-control" [(ngModel)]="cvcCode" 
+                                       placeholder="123" maxlength="4" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="closePaymentModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" 
+                        (click)="confirmPayment()" 
+                        [disabled]="!isPaymentFormValid() || isProcessingPayment">
+                    <span *ngIf="isProcessingPayment" class="spinner-border spinner-border-sm me-2"></span>
+                    {{ isProcessingPayment ? 'Processing...' : 'Confirm Payment' }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

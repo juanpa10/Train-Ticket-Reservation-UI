@@ -14,7 +14,19 @@
             </div>
         </div>
 
-        <table class="table table-bordered table-striped mb-0" id="datatable-editable">
+        <div *ngIf="isLoading" class="text-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Loading trains...</p>
+        </div>
+
+        <div *ngIf="!isLoading && trains.length === 0" class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>
+            No trains found. Click "New Train" to add one.
+        </div>
+
+        <table class="table table-bordered table-striped mb-0" *ngIf="!isLoading && trains.length > 0" id="datatable-editable">
             <thead>
                 <tr>
                     <th>Train Number</th>
@@ -22,30 +34,25 @@
                     <th>From Station</th>
                     <th>To Station</th>
                     <th>Seats</th>
-                    <th>Fare</th>
+                    <th>Fare (€)</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Train 1</td>
-                    <td>Author 1</td>
-                    <td>Editorial 1</td>
-                    <td>ISBN 1</td>
-                    <td>Año 1</td>
+                <tr *ngFor="let train of trains">
+                    <td>{{ train.tr_no }}</td>
+                    <td>{{ train.tr_name }}</td>
+                    <td>{{ train.from_stn }}</td>
+                    <td>{{ train.to_stn }}</td>
+                    <td>{{ train.seats }}</td>
+                    <td>€{{ train.fare.toFixed(2) }}</td>
                     <td>
-                        <button class="btn btn-warning">Edit</button>
-                        <button class="btn btn-danger">Delete</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Train 2</td>
-                    <td>Author 2</td>
-                    <td>Editorial 2</td>
-                    <td>ISBN 2</td>
-                    <td>Año 2</td>
-                    <td>
-                        <button class="btn btn-warning">Edit</button>
-                        <button class="btn btn-danger">Delete</button>
+                        <button class="btn btn-warning btn-sm me-1" (click)="editTrain(train)" title="Edit Train">
+                            <i class="bx bx-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-danger btn-sm" (click)="deleteTrain(train)" title="Delete Train">
+                            <i class="bx bx-trash"></i> Delete
+                        </button>
                     </td>
                 </tr>
             </tbody>

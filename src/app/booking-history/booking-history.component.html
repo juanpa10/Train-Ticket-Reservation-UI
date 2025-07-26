@@ -1,0 +1,52 @@
+<section class="card">
+    <header class="card-header">
+        <div class="card-actions">
+            <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+        </div>
+        <h2 class="card-title">Booking History</h2>
+    </header>
+    <div class="card-body">
+        <div class="row mb-3" *ngIf="!isLoading">
+            <div class="col-sm-12">
+                <p class="text-muted">User: <strong>{{ userId }}</strong></p>
+            </div>
+        </div>
+
+        <div *ngIf="isLoading" class="text-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Loading booking history...</p>
+        </div>
+
+        <div *ngIf="!isLoading && bookings.length === 0" class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>
+            No bookings found for this user.
+        </div>
+
+        <table class="table table-bordered table-striped mb-0" *ngIf="!isLoading && bookings.length > 0" id="datatable-editable">
+            <thead>
+                <tr>
+                    <th>Transaction ID</th>
+                    <th>Train Number</th>
+                    <th>From Station</th>
+                    <th>To Station</th>
+                    <th>Travel Date</th>
+                    <th>Seats</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let booking of bookings">
+                    <td>{{ booking.transId }}</td>
+                    <td>{{ booking.tr_no }}</td>
+                    <td>{{ booking.from_stn }}</td>
+                    <td>{{ booking.to_stn }}</td>
+                    <td>{{ formatDate(booking.date) }}</td>
+                    <td>{{ booking.seats }}</td>
+                    <td>{{ formatAmount(booking.amount) }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
